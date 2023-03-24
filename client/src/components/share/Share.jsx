@@ -6,7 +6,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../axios";
-import { Button } from "antd";
+import { Button, Image as Img } from "antd";
 import axios from "axios";
 
 const Share = () => {
@@ -70,7 +70,7 @@ const Share = () => {
           </div>
           <div className="right">
             {file && (
-              <img className="file" alt="" src={URL.createObjectURL(file)} />
+              <Img className="file" alt="" src={URL.createObjectURL(file)} />
             )}
           </div>
         </div>

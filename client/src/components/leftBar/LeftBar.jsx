@@ -14,9 +14,11 @@ import Courses from "../../assets/12.png";
 import Fund from "../../assets/13.png";
 import { AuthContext } from "../../context/authContext";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LeftBar = () => {
 
+  const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
 
   return (
@@ -32,7 +34,7 @@ const LeftBar = () => {
           </div>
           <div className="item">
             <img src={Friends} alt="" />
-            <span>Friends</span>
+            <a onClick={() => navigate(`/chat/${currentUser.id}`)}>Friends</a>
           </div>
           <div className="item">
             <img src={Groups} alt="" />

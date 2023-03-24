@@ -16,15 +16,16 @@ import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/authContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Chat from "./pages/chat/Chat";
 
-function App() {
+function App () {
   const { currentUser } = useContext(AuthContext);
 
   const { darkMode } = useContext(DarkModeContext);
 
   const queryClient = new QueryClient();
 
-  const Layout = () => {
+  const Layout = ({flex}) => {
     return (
       <QueryClientProvider client={queryClient}>
         <div className={`theme-${darkMode ? "dark" : "light"}`}>
@@ -65,6 +66,16 @@ function App() {
         {
           path: "/profile/:id",
           element: <Profile />,
+        },
+        {
+          path: "/chat/:id",
+          element: <Chat />,
+          children: [
+            {
+              path: "/chat/:id/chatto/:chatToId",
+              element: <Chat />
+            }
+          ]
         },
       ],
     },

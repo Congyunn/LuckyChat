@@ -1,42 +1,20 @@
 import { useState, useContext } from "react";
-import {Button} from 'antd'
+import { message, Form, Image, Input, Modal } from 'antd'
 import { makeRequest } from "../../axios";
 import "./update.scss";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import axios from "axios";
+import { upload } from '../../utils/uploadImg'
 import { AuthContext } from "../../context/authContext";
 
-const Update = ({ setOpenUpdate, user }) => {
+const Update = ({ openUpdate, setOpenUpdate, user }) => {
+
+  const [form] = Form.useForm();
+  const [messageApi, contextHolder] = message.useMessage();
+
   const [cover, setCover] = useState(null);
   const [profile, setProfile] = useState(null);
   const [updateLoading, setUpdateLoading] = useState(false);
-  const [texts, setTexts] = useState({
-    email: user.email,
-    password: user.password,
-    name: user.name,
-    city: user.city,
-    website: user.website,
-  });
-  const {currentUser, setCurrentUser} = useContext(AuthContext);
-
-  const upload = async (file) => {
-    console.log(file)
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("uid", "92637f6f565f6f34de32c0435603d134");
-      formData.append("token", "ea478013eb4d470a1b910a4642db69ea")
-      const res = await axios.post("https://www.imgurl.org/api/v2/upload", formData);
-      return res.data.data.url;
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleChange = (e) => {
-    setTexts((prev) => ({ ...prev, [e.target.name]: [e.target.value] }));
-  };
+  const { currentUser, setCurrentUser } = useContext(AuthContext);
 
   const queryClient = useQueryClient();
 
@@ -54,106 +32,117 @@ const Update = ({ setOpenUpdate, user }) => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    setUpdateLoading(true);
-    const coverUrl = cover ? await upload(cover) : user.coverPic;
-    const profileUrl = profile ? await upload(profile) : user.profilePic;
-    const userAuth = { ...texts, coverPic: coverUrl, profilePic: profileUrl, id: currentUser.id }
-    mutation.mutate(userAuth);
-    setCurrentUser(userAuth || null)
-    setOpenUpdate(false);
-    setCover(null);
-    setProfile(null);
-    setUpdateLoading(false)
+    form.validateFields().then(async (values) => {
+      setUpdateLoading(true);
+      const coverUrl = cover ? await upload(cover) : user.coverPic;
+      const profileUrl = profile ? await upload(profile) : user.profilePic;
+      const userAuth = { ...values, coverPic: coverUrl, profilePic: profileUrl, id: currentUser.id }
+      mutation.mutate(userAuth);
+      messageApi.open({
+        type: 'success',
+        content: '信息修改成功！',
+      });
+      setTimeout(() => {
+        setCurrentUser(userAuth || null)
+        setOpenUpdate(false);
+        setCover(null);
+        setProfile(null);
+        setUpdateLoading(false)
+      }, 1000);
+    }).catch((e) => {
+      messageApi.open({
+        type: 'error',
+        content: `信息修改失败，失败原因：${e}`,
+      });
+    });
   }
+
   return (
-    <div className="update">
-      <div className="wrapper">
-        <h1>Update Your Profile</h1>
-        <form>
-          <div className="files">
-            <label htmlFor="cover">
-              <span>Cover Picture</span>
-              <div className="imgContainer">
-                <img
-                  src={
-                    cover
-                      ? URL.createObjectURL(cover)
-                      : user.coverPic
-                  }
-                  alt=""
-                />
-                <CloudUploadIcon className="icon" />
-              </div>
-            </label>
-            <input
-              type="file"
-              id="cover"
-              style={{ display: "none" }}
-              onChange={(e) => setCover(e.target.files[0])}
-            />
-            <label htmlFor="profile">
-              <span>Profile Picture</span>
-              <div className="imgContainer">
-                <img
-                  src={
-                    profile
-                      ? URL.createObjectURL(profile)
-                      : user.profilePic
-                  }
-                  alt=""
-                />
-                <CloudUploadIcon className="icon" />
-              </div>
-            </label>
-            <input
-              type="file"
-              id="profile"
-              style={{ display: "none" }}
-              onChange={(e) => setProfile(e.target.files[0])}
-            />
+    <>
+      {contextHolder}
+      <Form
+        form={form}
+        initialValues={{
+          email: currentUser?.email,
+          name: currentUser?.name,
+          city: currentUser?.city,
+          website: currentUser?.website,
+          desc: currentUser?.desc
+        }}>
+        <Modal
+          open={openUpdate}
+          okButtonProps={{
+            loading: updateLoading
+          }}
+          onOk={handleClick}
+          onCancel={() => setOpenUpdate(false)}
+        >
+          <div className="update">
+            <div className="wrapper">
+              <h1>Update Your Profile</h1>
+              <br />
+              <form>
+                <div className="files">
+                  <h3>Cover Picture</h3>
+                  <div className="imgContainer">
+                    <Image
+                      src={
+                        cover
+                          ? URL.createObjectURL(cover)
+                          : user?.coverPic
+                      }
+                      alt=""
+                      width={'200px'}
+                      height={'200px'}
+                    />
+                  </div>
+                  <Input
+                    type="file"
+                    id="cover"
+                    onChange={(e) => setCover(e.target.files[0])}
+                  />
+                  <br /><br />
+                  <h3>Profile Picture</h3>
+                  <div className="imgContainer">
+                    <Image
+                      src={
+                        profile
+                          ? URL.createObjectURL(profile)
+                          : user?.profilePic
+                      }
+                      alt=""
+                      width={'200px'}
+                      height={'200px'}
+                    />
+                  </div>
+                  <Input
+                    type="file"
+                    id="profile"
+                    onChange={(e) => setProfile(e.target.files[0])}
+                  />
+                  <br /><br />
+                </div>
+                <Form.Item label="Email" name="email" rules={[{ required: true }]}>
+                  <Input />
+                </Form.Item>
+                <Form.Item label="Name" name="name" rules={[{ required: true }]}>
+                  <Input />
+                </Form.Item>
+                <Form.Item label="Country/City" name="city">
+                  <Input />
+                </Form.Item>
+                <Form.Item label="Website" name="website">
+                  <Input />
+                </Form.Item>
+                <Form.Item label="Description" name="desc">
+                  <Input />
+                </Form.Item>
+              </form>
+            </div>
           </div>
-          <label>Email</label>
-          <input
-            type="text"
-            value={texts.email}
-            name="email"
-            onChange={handleChange}
-          />
-          <label>Password</label>
-          <input
-            type="text"
-            value={texts.password}
-            name="password"
-            onChange={handleChange}
-          />
-          <label>Name</label>
-          <input
-            type="text"
-            value={texts.name}
-            name="name"
-            onChange={handleChange}
-          />
-          <label>Country / City</label>
-          <input
-            type="text"
-            name="city"
-            value={texts.city}
-            onChange={handleChange}
-          />
-          <label>Website</label>
-          <input
-            type="text"
-            name="website"
-            value={texts.website}
-            onChange={handleChange}
-          />
-          <Button onClick={handleClick} type="primary" loading={updateLoading} >Update</Button>
-        </form>
-        <button className="close" onClick={() => setOpenUpdate(false)}>
-          close
-        </button>
-      </div>
-    </div>
+        </Modal>
+      </Form >
+    </>
   );
 };
 

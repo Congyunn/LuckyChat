@@ -1,7 +1,9 @@
 import "./rightBar.scss";
+import { useLocation } from "react-router-dom";
 
 const RightBar = () => {
-  return (
+  const page = useLocation().pathname.split("/")[1];
+  return page == "chat" ? <></> : (
     <div className="rightBar">
       <div className="container">
         <div className="item">
