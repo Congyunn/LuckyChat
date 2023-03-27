@@ -17,13 +17,15 @@ import axios from "axios";
 const Navbar = () => {
   const navigate = useNavigate()
   const { toggle, darkMode } = useContext(DarkModeContext);
-  const { currentUser, logout } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
 
   const checkProfile = () => {
     navigate(`/profile/${currentUser.id}`)
   }
   const logOut = async () => {
     await axios.post("http://localhost:8800/api/auth/logout");
+    await axios.put("http://localhost:8800/api/auth/logout", { username: currentUser.username });
+    window.socket.close();
     navigate(`/login`)
   }
 

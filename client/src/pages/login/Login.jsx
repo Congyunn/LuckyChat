@@ -15,13 +15,15 @@ const Login = () => {
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-  const { login } = useContext(AuthContext);
+  const { login, changeOnline, currentUser } = useContext(AuthContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       await login(inputs);
-      navigate("/")
+      await changeOnline(inputs);
+      navigate("/");
+      //window.location.reload();
     } catch (err) {
       setErr(err.response.data);
     }

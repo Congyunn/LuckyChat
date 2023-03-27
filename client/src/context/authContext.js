@@ -16,12 +16,18 @@ export const AuthContextProvider = ({ children }) => {
     setCurrentUser(res.data)
   };
 
+  const changeOnline = async (inputs) => {
+    await axios.put("http://localhost:8800/api/auth/login", inputs, {
+      withCredentials: true,
+    });
+  }
+
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
 
   return (
-    <AuthContext.Provider value={{ currentUser, login, setCurrentUser }}>
+    <AuthContext.Provider value={{ currentUser, login, changeOnline, setCurrentUser }}>
       {children}
     </AuthContext.Provider>
   );

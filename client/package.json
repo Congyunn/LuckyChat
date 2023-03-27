@@ -44,5 +44,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "socket.io": "^4.6.1",
+    "socket.io-client": "^4.6.1"
   }
 }

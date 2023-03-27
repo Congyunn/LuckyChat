@@ -6,6 +6,7 @@ import {
   Outlet,
   Navigate,
 } from "react-router-dom";
+import { notification, Button } from 'antd'
 import Navbar from "./components/navbar/Navbar";
 import LeftBar from "./components/leftBar/LeftBar";
 import RightBar from "./components/rightBar/RightBar";
@@ -19,81 +20,85 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Chat from "./pages/chat/Chat";
 
 function App () {
+
   const { currentUser } = useContext(AuthContext);
 
-  const { darkMode } = useContext(DarkModeContext);
+  window.socket.emit('userIdToSocketId',
+    { userId: currentUser?.id, socketId: window.socket.id });
 
-  const queryClient = new QueryClient();
+const { darkMode } = useContext(DarkModeContext);
 
-  const Layout = ({flex}) => {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <div className={`theme-${darkMode ? "dark" : "light"}`}>
-          <Navbar />
-          <div style={{ display: "flex" }}>
-            <LeftBar />
-            <div style={{ flex: 6 }}>
-              <Outlet />
-            </div>
-            <RightBar />
-          </div>
-        </div>
-      </QueryClientProvider>
-    );
-  };
+const queryClient = new QueryClient();
 
-  const ProtectedRoute = ({ children }) => {
-    if (!currentUser) {
-      return <Navigate to="/login" />;
-    }
-
-    return children;
-  };
-
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: (
-        <ProtectedRoute>
-          <Layout />
-        </ProtectedRoute>
-      ),
-      children: [
-        {
-          path: "/",
-          element: <Home />,
-        },
-        {
-          path: "/profile/:id",
-          element: <Profile />,
-        },
-        {
-          path: "/chat/:id",
-          element: <Chat />,
-          children: [
-            {
-              path: "/chat/:id/chatto/:chatToId",
-              element: <Chat />
-            }
-          ]
-        },
-      ],
-    },
-    {
-      path: "/login",
-      element: <Login />,
-    },
-    {
-      path: "/register",
-      element: <Register />,
-    },
-  ]);
-
+const Layout = ({ flex }) => {
   return (
-    <div>
-      <RouterProvider router={router} />
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div className={`theme-${darkMode ? "dark" : "light"}`}>
+        <Navbar />
+        <div style={{ display: "flex" }}>
+          <LeftBar />
+          <div style={{ flex: 6 }}>
+            <Outlet />
+          </div>
+          <RightBar />
+        </div>
+      </div>
+    </QueryClientProvider>
   );
+};
+
+const ProtectedRoute = ({ children }) => {
+  if (!currentUser) {
+    return <Navigate to="/login" />;
+  }
+
+  return children;
+};
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/profile/:id",
+        element: <Profile />,
+      },
+      {
+        path: "/chat/:id",
+        element: <Chat />,
+        children: [
+          {
+            path: "/chat/:id/chatto/:chatToId",
+            element: <Chat />
+          }
+        ]
+      },
+    ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
+  },
+]);
+
+return (
+  <div>
+    <RouterProvider router={router} />
+  </div>
+);
 }
 
 export default App;

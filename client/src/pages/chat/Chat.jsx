@@ -1,5 +1,7 @@
 import "./Chat.scss";
-import { Layout, Menu, theme, Image, Row, Col } from 'antd';
+import { Layout, Menu, theme, Image, Row, Col, Input, Button } from 'antd';
+import ChatInput from "../../components/chat/chatInput/ChatInput";
+import ChatPanel from "../../components/chat/chatPanel/ChatPanel";
 import React, { useContext, useState } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import { makeRequest } from "../../axios";
@@ -17,9 +19,18 @@ const Chat = () => {
 
     const [currentChat, setCurrentChat] = useState(null);
 
-    const { isLoading, error, data } = useQuery(["chatFriends"], () =>
-        makeRequest.get("/chat/" + currentUser.id).then((res) => {
+    const { data: onlineData } = useQuery(["chatOnlineFriends"], () =>
+        makeRequest.get(`/chat/${currentUser.id}?type=online`).then((res) => {
             return res.data;
+        }).catch((e) => {
+            console.log('获取在线好友失败！', e)
+        })
+    );
+    const { data: offlineData } = useQuery(["chatOfflineFriends"], () =>
+        makeRequest.get(`/chat/${currentUser.id}?type=offline`).then((res) => {
+            return res.data;
+        }).catch((e) => {
+            console.log('获取离线好友失败！', e)
         })
     );
 
@@ -28,28 +39,40 @@ const Chat = () => {
             <Sider
                 breakpoint="lg"
                 collapsedWidth="0"
-                onBreakpoint={(broken) => {
-                    console.log(broken);
-                }}
-                onCollapse={(collapsed, type) => {
-                    console.log(collapsed, type);
-                }}
             >
                 <div className="logo" />
                 <Menu
                     theme="dark"
                     mode="inline"
-                    // defaultSelectedKeys={['4']}
-                    items={data?.map(
-                        item => ({
-                            key: item?.id,
+                    items={[
+                        {
+                            key: 'online',
                             icon: React.createElement(UserOutlined),
-                            label: item?.username,
-                        }),
-                    )}
+                            label: '在线好友',
+                            children:
+                                onlineData?.map(
+                                    item => ({
+                                        key: item?.id,
+                                        icon: React.createElement(UserOutlined),
+                                        label: item?.name,
+                                    }),
+                                )
+                        }, {
+                            key: 'offline',
+                            icon: React.createElement(UserOutlined),
+                            label: '离线好友',
+                            children:
+                                offlineData?.map(
+                                    item => ({
+                                        key: item?.id,
+                                        icon: React.createElement(UserOutlined),
+                                        label: item?.name,
+                                    }),
+                                )
+                        }]}
                     onClick={(e) => {
-                        setCurrentChat(...data?.filter(userInfo => {
-                            return userInfo.id == e.key
+                        setCurrentChat(...(onlineData?.concat(offlineData))?.filter(userInfo => {
+                            return Number(userInfo.id) === Number(e.key)
                         }));
                         navigate(`/chat/${currentUser.id}/chatto/${e.key}`)
                     }}
@@ -63,18 +86,22 @@ const Chat = () => {
                     }}
                 >
                     <Row>
-                        <Col span={8}>
-                            <Image src={currentChat?.profilePic} style={{
-                                'width': '60px',
-                                'height': '60px',
-                                'border-radius': '50%',
-                                'object-fit': 'cover'
-                            }} />
-                        </Col>
-                        <span style={{ 'fontSize': '30px', 'fontWeight': 800 }}>
-                            {currentChat?.username}
-                        </span>
-                        {currentChat?.desc && <span>个性签名：{currentChat?.desc}</span>}
+                        {currentChat &&
+                            <>
+                                <Col span={8}>
+                                    <Image src={currentChat?.profilePic} style={{
+                                        'width': '60px',
+                                        'height': '60px',
+                                        'borderRadius': '50%',
+                                        'objectFit': 'cover'
+                                    }} />
+                                </Col>
+                                <span style={{ 'fontSize': '30px', 'fontWeight': 800 }}>
+                                    {currentChat?.name}
+                                </span>
+                                {currentChat?.desc && <span>个性签名：{currentChat?.desc}</span>}
+                            </>
+                        }
                     </Row>
                 </Header>
                 <Content
@@ -84,20 +111,25 @@ const Chat = () => {
                 >
                     <div
                         style={{
-                            padding: 24,
-                            minHeight: 360,
+                            padding: 15,
+                            minHeight: 510,
                             background: colorBgContainer,
+                            overflow: 'auto',
+                            height: '100%'
                         }}
                     >
-                        content
+                        {currentChat &&
+                            <ChatPanel currentChat={currentChat} />}
                     </div>
                 </Content>
                 <Footer
                     style={{
                         textAlign: 'center',
+                        padding: 15
                     }}
                 >
-                    Ant Design ©2023 Created by Ant UED
+                    {currentChat &&
+                        <ChatInput currentChat={currentChat} />}
                 </Footer>
             </Layout>
         </Layout>
