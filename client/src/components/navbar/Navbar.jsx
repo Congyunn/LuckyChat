@@ -26,6 +26,7 @@ const Navbar = () => {
     await axios.post("http://localhost:8800/api/auth/logout");
     await axios.put("http://localhost:8800/api/auth/logout", { username: currentUser.username });
     window.socket.close();
+    window.connectCount--;
     navigate(`/login`)
   }
 

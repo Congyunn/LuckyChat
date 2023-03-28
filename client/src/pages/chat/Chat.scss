@@ -1,3 +1,20 @@
 .headInfo {
-    margin: auto;
+  margin: auto;
+}
+.menuImg {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.panelDiv::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
+}
+
+.panelDiv {
+  scrollbar-width: none; /* firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-radius: 2%;
 }

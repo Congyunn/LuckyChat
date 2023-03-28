@@ -6,6 +6,7 @@ import { DarkModeContextProvider } from "./context/darkModeContext";
 import { io } from "socket.io-client";
 
 window.socket = io("ws://localhost:8801"); //每个客户端只建立一个Socket连接
+window.connectCount = 1;
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <DarkModeContextProvider>

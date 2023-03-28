@@ -23,7 +23,7 @@ const Login = () => {
       await login(inputs);
       await changeOnline(inputs);
       navigate("/");
-      //window.location.reload();
+      window.location.reload();
     } catch (err) {
       setErr(err.response.data);
     }

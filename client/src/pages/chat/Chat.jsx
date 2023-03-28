@@ -1,8 +1,8 @@
 import "./Chat.scss";
-import { Layout, Menu, theme, Image, Row, Col, Input, Button } from 'antd';
+import { Layout, Menu, theme, Image, Row, Col } from 'antd';
 import ChatInput from "../../components/chat/chatInput/ChatInput";
 import ChatPanel from "../../components/chat/chatPanel/ChatPanel";
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import { makeRequest } from "../../axios";
 import { AuthContext } from '../../context/authContext'
@@ -14,10 +14,18 @@ const Chat = () => {
     const {
         token: { colorBgContainer },
     } = theme.useToken();
-    const { currentUser } = useContext(AuthContext);
+    const { currentUser, offlineIdArray } = useContext(AuthContext);
+
     const navigate = useNavigate();
 
     const [currentChat, setCurrentChat] = useState(null);
+    const [chatPanelList, setChatPanelList] = useState([]);
+
+    const chatListRef = useRef(null);
+
+    useEffect(() => {
+        chatListRef.current.scrollTop = chatListRef.current.scrollHeight;
+    }, [chatPanelList]);
 
     const { data: onlineData } = useQuery(["chatOnlineFriends"], () =>
         makeRequest.get(`/chat/${currentUser.id}?type=online`).then((res) => {
@@ -53,8 +61,9 @@ const Chat = () => {
                                 onlineData?.map(
                                     item => ({
                                         key: item?.id,
-                                        icon: React.createElement(UserOutlined),
+                                        icon: <img src={item?.profilePic} className='menuImg' />,
                                         label: item?.name,
+                                        danger: offlineIdArray.includes(item?.id)
                                     }),
                                 )
                         }, {
@@ -65,8 +74,9 @@ const Chat = () => {
                                 offlineData?.map(
                                     item => ({
                                         key: item?.id,
-                                        icon: React.createElement(UserOutlined),
+                                        icon: <img src={item?.profilePic} className='menuImg' />,
                                         label: item?.name,
+                                        danger: offlineIdArray.includes(item?.id)
                                     }),
                                 )
                         }]}
@@ -110,6 +120,8 @@ const Chat = () => {
                     }}
                 >
                     <div
+                        className="panelDiv"
+                        ref={chatListRef}
                         style={{
                             padding: 15,
                             minHeight: 510,
@@ -119,7 +131,7 @@ const Chat = () => {
                         }}
                     >
                         {currentChat &&
-                            <ChatPanel currentChat={currentChat} />}
+                            <ChatPanel currentChat={currentChat} setChatPanelList={setChatPanelList} />}
                     </div>
                 </Content>
                 <Footer
