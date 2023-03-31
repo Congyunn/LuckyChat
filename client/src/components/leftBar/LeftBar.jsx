@@ -32,9 +32,9 @@ const LeftBar = () => {
             />
             <span>{currentUser.name}</span>
           </div>
-          <div className="item">
+          <div className="item" onClick={() => navigate(`/chat/${currentUser.id}`)}>
             <img src={Friends} alt="" />
-            <a onClick={() => navigate(`/chat/${currentUser.id}`)}>Friends</a>
+            <a>Friends</a>
           </div>
           <div className="item">
             <img src={Groups} alt="" />
@@ -68,7 +68,7 @@ const LeftBar = () => {
             <img src={Gallery} alt="" />
             <span>Gallery</span>
           </div>
-          <div className="item">
+          <div className="item" onClick={() => navigate(`/video/${currentUser.id}`)}>
             <img src={Videos} alt="" />
             <span>Videos</span>
           </div>

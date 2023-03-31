@@ -29,8 +29,9 @@ const ChatInput = ({ currentChat }) => {
         e.preventDefault();
         setSendLoading(true);
         const newMessage = {
-            fromId: currentUser.id,
-            toId: currentChat.id,
+            fromId: currentUser?.id,
+            fromName: currentUser?.name,
+            toId: currentChat?.id,
             msg: chatMsg,
             isImage: false
         }

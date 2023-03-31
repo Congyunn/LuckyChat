@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 
 const RightBar = () => {
   const page = useLocation().pathname.split("/")[1];
-  return page == "chat" ? <></> : (
+  return ["chat", "voice", "video"].includes(page) ? <></> : (
     <div className="rightBar">
       <div className="container">
         <div className="item">

@@ -4,9 +4,8 @@ import {
   createBrowserRouter,
   RouterProvider,
   Outlet,
-  Navigate,
+  Navigate
 } from "react-router-dom";
-import { notification, Button } from 'antd'
 import Navbar from "./components/navbar/Navbar";
 import LeftBar from "./components/leftBar/LeftBar";
 import RightBar from "./components/rightBar/RightBar";
@@ -18,6 +17,7 @@ import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/authContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Chat from "./pages/chat/Chat";
+import Video from "./pages/video/Video"
 
 function App () {
 
@@ -79,6 +79,16 @@ function App () {
             }
           ]
         },
+        {
+          path: "/video/:id",
+          element: <Video />,
+          children: [
+            {
+              path: "/video/:id/videoto/:videoToId",
+              element: <Video />
+            }
+          ]
+        }
       ],
     },
     {

@@ -113,7 +113,7 @@ const Stories = () => {
           ? <Spin />
           : data.map((story) => (
             <div className="story" key={story.id}>
-              <img src={story.img} alt="" />
+              <img src={story.img} alt="" onClick={() => jumpToProfile(story)} />
               <span onClick={() => jumpToProfile(story)}>{story.name}</span>
             </div>
           ))}

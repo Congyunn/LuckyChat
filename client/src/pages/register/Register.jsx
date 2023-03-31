@@ -33,18 +33,6 @@ const Register = () => {
   return (
     <div className="register">
       <div className="card">
-        <div className="left">
-          <h1>LuckyChat</h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero cum,
-            alias totam numquam ipsa exercitationem dignissimos, error nam,
-            consequatur.
-          </p>
-          <span>Do you have an account?</span>
-          <Link to="/login">
-            <button>Login</button>
-          </Link>
-        </div>
         <div className="right">
           <h1>Register</h1>
           <form>
@@ -75,6 +63,18 @@ const Register = () => {
             {err && err}
             <button onClick={handleClick}>Register</button>
           </form>
+        </div>
+        <div className="left">
+          <h1>LuckyChat</h1>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero cum,
+            alias totam numquam ipsa exercitationem dignissimos, error nam,
+            consequatur.
+          </p>
+          <span>Do you have an account?</span>
+          <Link to="/login">
+            <button>Login</button>
+          </Link>
         </div>
       </div>
     </div>

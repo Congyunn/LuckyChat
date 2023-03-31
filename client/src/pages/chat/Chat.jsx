@@ -96,7 +96,7 @@ const Chat = () => {
                     }}
                 >
                     <Row>
-                        {currentChat &&
+                        {currentChat ? (
                             <>
                                 <Col span={8}>
                                     <Image src={currentChat?.profilePic} style={{
@@ -110,7 +110,11 @@ const Chat = () => {
                                     {currentChat?.name}
                                 </span>
                                 {currentChat?.desc && <span>个性签名：{currentChat?.desc}</span>}
-                            </>
+                            </>) : (
+                            <span style={{ 'fontSize': '30px', 'fontWeight': 800 }}>
+                                开始聊天吧！
+                            </span>
+                        )
                         }
                     </Row>
                 </Header>

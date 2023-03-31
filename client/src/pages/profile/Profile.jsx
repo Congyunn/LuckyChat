@@ -89,11 +89,24 @@ const Profile = () => {
               <div className="center">
                 <span>{data.name}</span>
                 <div className="info">
-                  <div className="item">
+                  <div className="item" onClick={() => {
+                    if (data?.city) {
+                      window.open(`https://gaode.com/search?query=${data.city}`)
+                    }
+                  }}>
                     <PlaceIcon />
                     <span>{data.city}</span>
                   </div>
-                  <div className="item">
+                  <div className="item" onClick={() => {
+                    if (data?.website) {
+                      const url =
+                        (data.website.splite('.')[0] === 'http://' ||
+                          data.website.splite('.')[0] === 'https://') ?
+                          data.website :
+                          `http://${data.website}`
+                      window.open(url);
+                    }
+                  }}>
                     <LanguageIcon />
                     <span>{data.website}</span>
                   </div>
