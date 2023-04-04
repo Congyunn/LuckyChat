@@ -12,7 +12,11 @@ import stories from "./routes/stories.js"
 import chatRoutes from './routes/chat.js';
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import multer from "multer";
 import { sendOfflineMessage } from "./controllers/chat.js";
+
+global.emailCode = [];
+global.registerEmailCode = [];
 
 //middlewares
 app.use((req, res, next) => {

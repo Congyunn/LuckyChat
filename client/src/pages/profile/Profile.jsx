@@ -11,13 +11,15 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Posts from "../../components/posts/Posts";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { makeRequest } from "../../axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 import Update from "../../components/update/Update";
 import { useState } from "react";
 
 const Profile = () => {
+  const navigate = useNavigate();
+
   const [openUpdate, setOpenUpdate] = useState(false);
   const { currentUser } = useContext(AuthContext);
 
@@ -103,7 +105,7 @@ const Profile = () => {
                         (data.website.splite('.')[0] === 'http://' ||
                           data.website.splite('.')[0] === 'https://') ?
                           data.website :
-                          `http://${data.website}`
+                          `ws://${data.website}`
                       window.open(url);
                     }
                   }}>
@@ -124,7 +126,9 @@ const Profile = () => {
                 )}
               </div>
               <div className="right">
-                <EmailOutlinedIcon />
+                <EmailOutlinedIcon onClick={() => {
+                  navigate(`/chat/${currentUser?.id}`);
+                }} />
                 <MoreVertIcon />
               </div>
             </div>

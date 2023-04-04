@@ -18,6 +18,8 @@ import { AuthContext } from "./context/authContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Chat from "./pages/chat/Chat";
 import Video from "./pages/video/Video"
+import Watch from "./pages/watch/Watch";
+import Schedule from "./pages/schedule/Schedule";
 
 function App () {
 
@@ -47,9 +49,9 @@ function App () {
   const ProtectedRoute = ({ children }) => {
     if (!currentUser) {
       return <Navigate to="/login" />;
+    } else {
+      return children;
     }
-
-    return children;
   };
 
   const router = createBrowserRouter([
@@ -64,6 +66,14 @@ function App () {
         {
           path: "/",
           element: <Home />,
+        },
+        {
+          path: "/watch",
+          element: <Watch />,
+        },
+        {
+          path: "/schedule",
+          element: <Schedule />,
         },
         {
           path: "/profile/:id",

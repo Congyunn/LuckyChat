@@ -6,13 +6,14 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../axios";
-import { Button, Image as Img } from "antd";
+import { Button, Image as Img, Modal } from "antd";
 import axios from "axios";
 
 const Share = () => {
   const [file, setFile] = useState(null);
   const [desc, setDesc] = useState("");
   const [sendLoading, setSendLoading] = useState(false);
+  const [placeModalVisible, setPlaceModalVisible] = useState(false);
 
   const upload = async (file) => {
     try {
@@ -56,54 +57,69 @@ const Share = () => {
   };
 
   return (
-    <div className="share">
-      <div className="container">
-        <div className="top">
-          <div className="left">
-            <img src={currentUser.profilePic} alt="" />
-            <input
-              type="text"
-              placeholder={`What's on your mind?`}
-              onChange={(e) => setDesc(e.target.value)}
-              value={desc}
-            />
-          </div>
-          <div className="right">
-            {file && (
-              <Img className="file" alt="" src={URL.createObjectURL(file)} />
-            )}
-          </div>
+    <>
+      {<Modal
+        title="选择分享的位置"
+        open={placeModalVisible}
+        onOk={() => {
+          setPlaceModalVisible(false);
+        }}
+        onCancel={() => setPlaceModalVisible(false)}
+        width="80vw" >
+        <div>
+          <iframe src="https://gaode.com/" title="高德地图"
+            style={{ width: '100%', height: '90vh' }}></iframe>
         </div>
-        <hr />
-        <div className="bottom">
-          <div className="left">
-            <input
-              type="file"
-              id="file"
-              style={{ display: "none" }}
-              onChange={(e) => setFile(e.target.files[0])}
-            />
-            <label htmlFor="file">
-              <div className="item">
-                <img src={Image} alt="" />
-                <span>Add Image</span>
-              </div>
-            </label>
-            <div className="item">
-              <img src={Map} alt="" />
-              <span>Add Place</span>
+      </Modal>}
+      <div className="share">
+        <div className="container">
+          <div className="top">
+            <div className="left">
+              <img src={currentUser.profilePic} alt="" />
+              <input
+                type="text"
+                placeholder={`What's on your mind?`}
+                onChange={(e) => setDesc(e.target.value)}
+                value={desc}
+              />
             </div>
-            <div className="item">
-              <img src={Friend} alt="" />
-              <span>Tag Friends</span>
+            <div className="right">
+              {file && (
+                <Img className="file" alt="" src={URL.createObjectURL(file)} />
+              )}
             </div>
           </div>
-          <div className="right">
-            <Button type="primary" loading={sendLoading} onClick={handleClick}>Share</Button>
+          <hr />
+          <div className="bottom">
+            <div className="left">
+              <input
+                type="file"
+                id="file"
+                style={{ display: "none" }}
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+              <label htmlFor="file">
+                <div className="item">
+                  <img src={Image} alt="" />
+                  <span>Add Image</span>
+                </div>
+              </label>
+              <div className="item" onClick={() => setPlaceModalVisible(true)}>
+                <img src={Map} alt="" />
+                <span>Add Place</span>
+              </div>
+              <div className="item">
+                <img src={Friend} alt="" />
+                <span>Tag Friends</span>
+              </div>
+            </div>
+            <div className="right">
+              <Button type="primary" loading={sendLoading} onClick={handleClick}>Share</Button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

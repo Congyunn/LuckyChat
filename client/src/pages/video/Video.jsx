@@ -6,7 +6,8 @@ import { makeRequest } from "../../axios";
 import { AuthContext } from '../../context/authContext'
 import { UserOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
-import VideoPanel from "../../components/video/videoPanel/VideoPanel"
+import VideoPanel from "../../components/video/videoPanel/VideoPanel";
+import axios from "axios";
 
 const { Sider } = Layout;
 const { confirm } = Modal;
@@ -36,6 +37,10 @@ const Chat = () => {
     const params = new URLSearchParams(search);
     const accept = params.get('accept');
     useEffect(() => {
+        const online = async () => {
+            await axios.put("http://localhost:8800/api/auth/login", { username: currentUser.username });
+          }
+          online();
         if (accept) {
             setAcceptVideo(true);
         }

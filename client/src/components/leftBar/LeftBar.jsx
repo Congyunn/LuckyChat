@@ -44,7 +44,7 @@ const LeftBar = () => {
             <img src={Market} alt="" />
             <span>Marketplace</span>
           </div>
-          <div className="item">
+          <div className="item" onClick={() => navigate(`/watch`)}>
             <img src={Watch} alt="" />
             <span>Watch</span>
           </div>
@@ -56,9 +56,9 @@ const LeftBar = () => {
         <hr />
         <div className="menu">
           <span>Your shortcuts</span>
-          <div className="item">
+          <div className="item" onClick={() => navigate(`/schedule`)}>
             <img src={Events} alt="" />
-            <span>Events</span>
+            <span>Schedule</span>
           </div>
           <div className="item">
             <img src={Gaming} alt="" />

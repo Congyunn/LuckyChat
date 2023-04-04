@@ -1,6 +1,7 @@
 import { db } from "../connect.js";
 import jwt from "jsonwebtoken";
 import moment from "moment";
+import * as fs from "fs";
 
 export const getFriends = (req, res) => {
     const token = req.cookies.accessToken;
@@ -9,15 +10,20 @@ export const getFriends = (req, res) => {
     jwt.verify(token, "secretkey", (err, userInfo) => {
         if (err) return res.status(403).json("Token is not valid!");
 
-        const q = req.query?.type == 'online' ?
-            `SELECT u.id, u.profilePic, u.username, u.desc, u.name FROM users AS u 
+        const q =
+            req.query?.type == 'online' ?
+                `SELECT u.id, u.profilePic, u.username, u.desc, u.name FROM users AS u 
                     JOIN relationships AS r ON (u.id = r.followedUserId) 
                     WHERE ? = r.followerUserId 
                     AND u.online = 'true'`:
-            `SELECT u.id, u.profilePic, u.username, u.desc, u.name FROM users AS u 
+                req.query?.type == 'offline' ?
+                    `SELECT u.id, u.profilePic, u.username, u.desc, u.name FROM users AS u 
                     JOIN relationships AS r ON (u.id = r.followedUserId) 
                     WHERE ? = r.followerUserId 
-                    AND u.online = 'false'`
+                    AND u.online = 'false'`:
+                    `SELECT u.id, u.profilePic, u.username, u.desc, u.name, u.brithday FROM users AS u 
+                    JOIN relationships AS r ON (u.id = r.followedUserId) 
+                    WHERE ? = r.followerUserId`
 
         db.query(q, [userInfo.id], (err, data) => {
             if (err) return res.status(500).json(err);
@@ -85,14 +91,16 @@ export const sendMessage = (req, res) => {
 
     jwt.verify(token, "secretkey", (err) => {
         if (err) return res.status(403).json("Token is not valid!");
-
-        const q = "INSERT INTO chat (`fromId`,`toId`,`createdAt`,`msg`, `isImage`) VALUE (?)";
+        console.log(req.file);
+        const q = "INSERT INTO chat (`fromId`,`toId`,`createdAt`,`msg`, `isImage`, `isAudio`, `audio`) VALUE (?)";
         const values = [
             req.body.fromId,
             req.body.toId,
             moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
             req.body.msg,
-            req.body.isImage
+            req.body.isImage,
+            req.body.isAudio,
+            req?.file?.filename
         ];
         db.query(q, [values], (err, data) => {
             if (err) return res.status(500).json(err);
@@ -114,3 +122,20 @@ export const sendOfflineMessage = (offlineMsg) => {
     ];
     db.query(q, [values]);
 }
+
+export const getChatAudio = (req, res) => {
+    const token = req.cookies.accessToken;
+    if (!token) return res.status(401).json("Not logged in!");
+    jwt.verify(token, "secretkey", (err, userInfo) => {
+        if (err) return res.status(403).json("Token is not valid!");
+        const path = `../file/chatAudios/${req.query?.filename}`;
+        fs.readFile(path, function (err, data) {
+            if (err) {
+                res.send('读取错误');
+            } else {
+                res.setHeader("Content-Type", 'audio/x-ms-wax');
+                res.send(data);
+            }
+        })
+    });
+};

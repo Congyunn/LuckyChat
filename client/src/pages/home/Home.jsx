@@ -2,10 +2,11 @@ import Stories from "../../components/stories/Stories"
 import Posts from "../../components/posts/Posts"
 import Share from "../../components/share/Share"
 import "./home.scss"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { AuthContext } from "../../context/authContext"
 import { makeRequest } from "../../axios"
 import { notification, Modal } from "antd"
+import axios from "axios"
 import { useNavigate, useParams } from "react-router-dom"
 
 const { confirm } = Modal;
@@ -13,6 +14,13 @@ const { confirm } = Modal;
 const Home = () => {
   const { currentUser, setOfflineIdArray } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const online = async () => {
+      await axios.put("http://localhost:8800/api/auth/login", { username: currentUser.username });
+    }
+    online();
+  }, []);
 
   //刚上线获取离线消息通知
   const getOfflineMsg = async () => {
@@ -55,7 +63,7 @@ const Home = () => {
   const openOnlineNotification = (msgData) => {
     notification.info({
       message: `好友 ${msgData?.fromName} 给您发消息啦！`,
-      description: `消息内容：${msgData?.msg}`,
+      description: msgData?.msg ? `消息内容：${msgData?.msg}` : `语音消息，请前往聊天界面查看`,
       onClick: () => {
         navigate(`/chat/${currentUser?.id}`);
       }

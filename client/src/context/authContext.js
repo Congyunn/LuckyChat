@@ -17,6 +17,17 @@ export const AuthContextProvider = ({ children }) => {
 
     setCurrentUser(res.data)
   };
+  const sendLoginCode = async (email) => {
+    await axios.get(`http://localhost:8800/api/auth/login/email?email=${email}`, {
+      withCredentials: true,
+    });
+  };
+  const loginEmail = async (email, code) => {
+    const res = await axios.post("http://localhost:8800/api/auth/login?type=email", { email, code }, {
+      withCredentials: true,
+    });
+    setCurrentUser(res.data)
+  };
 
   const changeOnline = async (inputs) => {
     await axios.put("http://localhost:8800/api/auth/login", inputs, {
@@ -32,7 +43,8 @@ export const AuthContextProvider = ({ children }) => {
     <AuthContext.Provider value={{
       currentUser, login,
       changeOnline, setCurrentUser,
-      offlineIdArray, setOfflineIdArray
+      offlineIdArray, setOfflineIdArray,
+      sendLoginCode, loginEmail
     }}>
       {children}
     </AuthContext.Provider>

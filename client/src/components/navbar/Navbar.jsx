@@ -26,14 +26,26 @@ const Navbar = () => {
   const checkProfile = () => {
     navigate(`/profile/${currentUser.id}`);
   }
-  const logOut = async () => {
-    await axios.post("http://localhost:8800/api/auth/logout");
+
+  const offline = async () => {
     await axios.put("http://localhost:8800/api/auth/logout", { username: currentUser.username });
     window.socket.close();
     window.videoSocket.close();
     window.connectCount--;
-    navigate(`/login`)
   }
+
+  const logOut = async () => {
+    await axios.post("http://localhost:8800/api/auth/logout");
+    await offline();
+    navigate(`/login`);
+  }
+
+  window.addEventListener('beforeunload', async (event) => {
+    event.preventDefault();
+    // Chrome requires returnValue to be set.
+    event.returnValue = '';
+    await offline();
+  });
 
   return (
     <div className="navbar">

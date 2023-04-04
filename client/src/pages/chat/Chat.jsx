@@ -8,6 +8,7 @@ import { makeRequest } from "../../axios";
 import { AuthContext } from '../../context/authContext'
 import { UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 const { Header, Content, Footer, Sider } = Layout;
 const Chat = () => {
@@ -26,6 +27,12 @@ const Chat = () => {
     useEffect(() => {
         chatListRef.current.scrollTop = chatListRef.current.scrollHeight;
     }, [chatPanelList]);
+    useEffect(() => {
+        const online = async () => {
+            await axios.put("http://localhost:8800/api/auth/login", { username: currentUser.username });
+          }
+          online();
+    }, []);
 
     const { data: onlineData } = useQuery(["chatOnlineFriends"], () =>
         makeRequest.get(`/chat/${currentUser.id}?type=online`).then((res) => {
