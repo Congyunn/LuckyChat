@@ -68,7 +68,8 @@ const Share = () => {
         width="80vw" >
         <div>
           <iframe src="https://gaode.com/" title="高德地图"
-            style={{ width: '100%', height: '90vh' }}></iframe>
+            style={{ width: '100%', height: '90vh' }}>
+          </iframe>
         </div>
       </Modal>}
       <div className="share">

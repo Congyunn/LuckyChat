@@ -6,10 +6,11 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import LeftBar from "../leftBar/LeftBar";
 import { TeamOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { Dropdown } from 'antd'
+import { useContext, useState } from "react";
+import { Dropdown, Modal } from 'antd'
 import { DarkModeContext } from "../../context/darkModeContext";
 import { AuthContext } from "../../context/authContext";
 import axios from "axios";
@@ -18,6 +19,8 @@ const Navbar = () => {
   const navigate = useNavigate()
   const { toggle, darkMode } = useContext(DarkModeContext);
   const { currentUser } = useContext(AuthContext);
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   const jumpToChat = () => {
     navigate(`/chat/${currentUser.id}`);
@@ -48,54 +51,19 @@ const Navbar = () => {
   });
 
   return (
-    <div className="navbar">
-      <div className="left">
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <span>LuckyChat</span>
-        </Link>
-        <Dropdown menu={
-          {
-            items:
-              [
-                {
-                  key: '1',
-                  label: (
-                    <a onClick={checkProfile}>
-                      查看我的资料
-                    </a>
-                  )
-                },
-                {
-                  key: '2',
-                  label: (
-                    <a onClick={logOut}>
-                      退出登录
-                    </a>
-                  ),
-                  danger: true
-                }
-              ]
-          }
-        }>
-          <UserOutlined />
-        </Dropdown>
-        {darkMode ? (
-          <WbSunnyOutlinedIcon onClick={toggle} />
-        ) : (
-          <DarkModeOutlinedIcon onClick={toggle} />
-        )}
-        <TeamOutlined onClick={jumpToChat} />
-        <GridViewOutlinedIcon />
-        <div className="search">
-          <SearchOutlinedIcon />
-          <input type="text" placeholder="Search..." />
-        </div>
-      </div>
-      <div className="right">
-        <PersonOutlinedIcon />
-        <EmailOutlinedIcon />
-        <NotificationsOutlinedIcon />
-        <div className="user">
+    <>
+      <Modal
+        open={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        footer={null}
+      >
+        <LeftBar setModalVisible={setModalVisible} />
+      </Modal>
+      <div className="navbar">
+        <div className="left">
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <span>LuckyChat</span>
+          </Link>
           <Dropdown menu={
             {
               items:
@@ -120,15 +88,59 @@ const Navbar = () => {
                 ]
             }
           }>
-            <img
-              src={currentUser.profilePic}
-              alt=""
-            // onClick={}
-            />
+            <UserOutlined />
           </Dropdown>
+          {darkMode ? (
+            <WbSunnyOutlinedIcon onClick={toggle} />
+          ) : (
+            <DarkModeOutlinedIcon onClick={toggle} />
+          )}
+          <TeamOutlined onClick={jumpToChat} />
+          <GridViewOutlinedIcon onClick={() => setModalVisible(true)} />
+          <div className="search">
+            <SearchOutlinedIcon />
+            <input type="text" placeholder="Search..." />
+          </div>
+        </div>
+        <div className="right">
+          <PersonOutlinedIcon />
+          <EmailOutlinedIcon />
+          <NotificationsOutlinedIcon />
+          <div className="user">
+            <Dropdown menu={
+              {
+                items:
+                  [
+                    {
+                      key: '1',
+                      label: (
+                        <a onClick={checkProfile}>
+                          查看我的资料
+                        </a>
+                      )
+                    },
+                    {
+                      key: '2',
+                      label: (
+                        <a onClick={logOut}>
+                          退出登录
+                        </a>
+                      ),
+                      danger: true
+                    }
+                  ]
+              }
+            }>
+              <img
+                src={currentUser.profilePic}
+                alt=""
+              // onClick={}
+              />
+            </Dropdown>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

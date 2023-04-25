@@ -10,6 +10,7 @@ import likeRoutes from "./routes/likes.js";
 import relationshipRoutes from "./routes/relationships.js";
 import stories from "./routes/stories.js"
 import chatRoutes from './routes/chat.js';
+import recommendRoutes from './routes/recommend.js';
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import multer from "multer";
@@ -131,8 +132,9 @@ app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/likes", likeRoutes);
 app.use("/api/relationships", relationshipRoutes);
-app.use("/api/stories", stories)
-app.use("/api/chat", chatRoutes)
+app.use("/api/stories", stories);
+app.use("/api/chat", chatRoutes);
+app.use("/api/recommend", recommendRoutes);
 
 app.listen(8800, () => {
   console.log("API working!");

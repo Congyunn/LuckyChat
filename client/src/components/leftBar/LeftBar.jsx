@@ -16,7 +16,7 @@ import { AuthContext } from "../../context/authContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-const LeftBar = () => {
+const LeftBar = ({ setModalVisible }) => {
 
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
@@ -32,7 +32,10 @@ const LeftBar = () => {
             />
             <span>{currentUser.name}</span>
           </div>
-          <div className="item" onClick={() => navigate(`/chat/${currentUser.id}`)}>
+          <div className="item" onClick={() => {
+            navigate(`/chat/${currentUser.id}`);
+            setModalVisible && setModalVisible(false);
+          }}>
             <img src={Friends} alt="" />
             <a>Friends</a>
           </div>
@@ -44,7 +47,10 @@ const LeftBar = () => {
             <img src={Market} alt="" />
             <span>Marketplace</span>
           </div>
-          <div className="item" onClick={() => navigate(`/watch`)}>
+          <div className="item" onClick={() => {
+            navigate(`/watch`);
+            setModalVisible && setModalVisible(false);
+          }}>
             <img src={Watch} alt="" />
             <span>Watch</span>
           </div>
@@ -56,7 +62,10 @@ const LeftBar = () => {
         <hr />
         <div className="menu">
           <span>Your shortcuts</span>
-          <div className="item" onClick={() => navigate(`/schedule`)}>
+          <div className="item" onClick={() => {
+            navigate(`/schedule`);
+            setModalVisible && setModalVisible(false);
+          }}>
             <img src={Events} alt="" />
             <span>Schedule</span>
           </div>
@@ -68,7 +77,10 @@ const LeftBar = () => {
             <img src={Gallery} alt="" />
             <span>Gallery</span>
           </div>
-          <div className="item" onClick={() => navigate(`/video/${currentUser.id}`)}>
+          <div className="item" onClick={() => {
+            navigate(`/video/${currentUser.id}`);
+            setModalVisible && setModalVisible(false);
+          }}>
             <img src={Videos} alt="" />
             <span>Videos</span>
           </div>

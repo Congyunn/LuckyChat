@@ -1,6 +1,6 @@
 export const chinaDateToDatetime = (chinaDate) => {
-    const d = new Date(chinaDate.toString());
-    return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+    const d = new Date(chinaDate?.toString());
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }
 export const scheduleTime = (chinaDate) => {
     const d = new Date(chinaDate.toString());
