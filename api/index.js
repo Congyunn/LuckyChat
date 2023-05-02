@@ -57,6 +57,7 @@ ws.on("connection", (socket) => {
   socket.on('sendVideo', (data) => {
     console.log('sendVideo', data);
     const videoToSocketId = uidTosid[data?.toId];
+    console.log(videoToSocketId);
     videoToSocketId &&
       //向被发起人通知
       socket.to(videoToSocketId).emit('receiveVideo', data);
@@ -126,15 +127,15 @@ vs.on('connection', socket => {
   })
 })
 
-app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/posts", postRoutes);
-app.use("/api/comments", commentRoutes);
-app.use("/api/likes", likeRoutes);
-app.use("/api/relationships", relationshipRoutes);
-app.use("/api/stories", stories);
-app.use("/api/chat", chatRoutes);
-app.use("/api/recommend", recommendRoutes);
+app.use("/api/auth", authRoutes); //权限控制，注册登录登出
+app.use("/api/users", userRoutes); //用户信息相关
+app.use("/api/posts", postRoutes); //动态相关
+app.use("/api/comments", commentRoutes); //评论相关
+app.use("/api/likes", likeRoutes); //点赞相关
+app.use("/api/relationships", relationshipRoutes); //关注好友相关
+app.use("/api/stories", stories); //随机故事相关
+app.use("/api/chat", chatRoutes); //好友聊天相关
+app.use("/api/recommend", recommendRoutes); //好友推荐相关
 
 app.listen(8800, () => {
   console.log("API working!");

@@ -99,6 +99,7 @@ const Home = () => {
   };
 
   window.socket.on('receiveVideo', (data) => {
+    console.log('收到视频邀请');
     window.singleAccept && showVideoConfirm(data);
   })
 

@@ -220,12 +220,13 @@ const Update = ({ openUpdate, setOpenUpdate, user }) => {
                         </Card>
                       </Col>
                     </Row>
+                    <br />
                     <Row>
                       <Col span={8}>
                         <Card
                           hoverable
                           style={{ width: 110, backgroundColor: selectInterest.liuxuezhinan ? '#FFE5B4' : 'white' }}
-                          cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+                          cover={<img alt="example" src="https://images.pexels.com/photos/7579319/pexels-photo-7579319.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />}
                           onClick={() => { setSelectInterest({ ...selectInterest, liuxuezhinan: !selectInterest.liuxuezhinan }); interestRef.current[3] = !interestRef.current[3] }}
                         >
                           <Meta description="留学指南" />
@@ -235,7 +236,7 @@ const Update = ({ openUpdate, setOpenUpdate, user }) => {
                         <Card
                           hoverable
                           style={{ width: 110, backgroundColor: selectInterest.qiuleiyundong ? '#FFE5B4' : 'white' }}
-                          cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+                          cover={<img alt="example" src="https://images.pexels.com/photos/47730/the-ball-stadion-football-the-pitch-47730.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />}
                           onClick={() => { setSelectInterest({ ...selectInterest, qiuleiyundong: !selectInterest.qiuleiyundong }); interestRef.current[4] = !interestRef.current[4] }}
                         >
                           <Meta description="球类运动" />
@@ -245,19 +246,20 @@ const Update = ({ openUpdate, setOpenUpdate, user }) => {
                         <Card
                           hoverable
                           style={{ width: 110, backgroundColor: selectInterest.kexuekepu ? '#FFE5B4' : 'white' }}
-                          cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+                          cover={<img alt="example" src="https://images.pexels.com/photos/256262/pexels-photo-256262.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />}
                           onClick={() => { setSelectInterest({ ...selectInterest, kexuekepu: !selectInterest.kexuekepu }); interestRef.current[5] = !interestRef.current[5] }}
                         >
                           <Meta description="科学科普" />
                         </Card>
                       </Col>
                     </Row>
+                    <br />
                     <Row>
                       <Col span={8}>
                         <Card
                           hoverable
                           style={{ width: 110, backgroundColor: selectInterest.sheying ? '#FFE5B4' : 'white' }}
-                          cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+                          cover={<img alt="example" src="https://images.pexels.com/photos/51383/photo-camera-subject-photographer-51383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />}
                           onClick={() => { setSelectInterest({ ...selectInterest, sheying: !selectInterest.sheying }); interestRef.current[6] = !interestRef.current[6] }}
                         >
                           <Meta description="摄影" />
@@ -267,7 +269,7 @@ const Update = ({ openUpdate, setOpenUpdate, user }) => {
                         <Card
                           hoverable
                           style={{ width: 110, backgroundColor: selectInterest.meishi ? '#FFE5B4' : 'white' }}
-                          cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+                          cover={<img alt="example" src="https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />}
                           onClick={() => { setSelectInterest({ ...selectInterest, meishi: !selectInterest.meishi }); interestRef.current[7] = !interestRef.current[7] }}
                         >
                           <Meta description="美食" />
@@ -277,19 +279,20 @@ const Update = ({ openUpdate, setOpenUpdate, user }) => {
                         <Card
                           hoverable
                           style={{ width: 110, backgroundColor: selectInterest.chuanda ? '#FFE5B4' : 'white' }}
-                          cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+                          cover={<img alt="example" src="https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />}
                           onClick={() => { setSelectInterest({ ...selectInterest, chuanda: !selectInterest.chuanda }); interestRef.current[8] = !interestRef.current[8] }}
                         >
                           <Meta description="穿搭" />
                         </Card>
                       </Col>
                     </Row>
+                    <br />
                     <Row>
                       <Col span={8}>
                         <Card
                           hoverable
                           style={{ width: 110, backgroundColor: selectInterest.gaoxiaorichang ? '#FFE5B4' : 'white' }}
-                          cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+                          cover={<img alt="example" src="https://images.pexels.com/photos/4658105/pexels-photo-4658105.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />}
                           onClick={() => { setSelectInterest({ ...selectInterest, gaoxiaorichang: !selectInterest.gaoxiaorichang }); interestRef.current[9] = !interestRef.current[9] }}
                         >
                           <Meta description="搞笑日常" />
@@ -299,7 +302,7 @@ const Update = ({ openUpdate, setOpenUpdate, user }) => {
                         <Card
                           hoverable
                           style={{ width: 110, backgroundColor: selectInterest.yundongjianshen ? '#FFE5B4' : 'white' }}
-                          cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+                          cover={<img alt="example" src="https://images.pexels.com/photos/2261485/pexels-photo-2261485.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />}
                           onClick={() => { setSelectInterest({ ...selectInterest, yundongjianshen: !selectInterest.yundongjianshen }); interestRef.current[10] = !interestRef.current[10] }}
                         >
                           <Meta description="运动健身" />
@@ -309,7 +312,7 @@ const Update = ({ openUpdate, setOpenUpdate, user }) => {
                         <Card
                           hoverable
                           style={{ width: 110, backgroundColor: selectInterest.chuidiao ? '#FFE5B4' : 'white' }}
-                          cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+                          cover={<img alt="example" src="https://images.pexels.com/photos/294674/pexels-photo-294674.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />}
                           onClick={() => { setSelectInterest({ ...selectInterest, chuidiao: !selectInterest.chuidiao }); interestRef.current[11] = !interestRef.current[11] }}
                         >
                           <Meta description="垂钓🎣" />

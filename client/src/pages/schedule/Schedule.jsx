@@ -22,11 +22,11 @@ const Schedule = () => {
         const renderDate = scheduleTime(value);
         const friendsBrithday = friendData.map(item => {
             const list = item?.brithday?.split('-');
-            return {
+            return list ? {
                 month: Number(list[1]),
                 day: Number(list[2]),
                 name: item?.name
-            }
+            } : {}
         })
         return friendsBrithday.map(friendBrithday => {
             if (friendBrithday.month === renderDate.month && friendBrithday.day === renderDate.day) {

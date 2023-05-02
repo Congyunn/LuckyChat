@@ -35,12 +35,15 @@ const VideoPanel = ({ acceptVideo, setAcceptVideo, currentVideoId, peerFlag }) =
     }
 
     useEffect(() => {
+        //通过浏览器内置函数获取视频和音频资源
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
             .then((stream) => {
                 const localVideo = localVideoRef.current;
                 if (localVideo) {
+                    //将本地媒体资源赋到小框中
                     localVideo.srcObject = stream;
                 }
+                //将本地资源上传到PeerJS的云服务中
                 myPeer.on('call', call => {
                     call.answer(stream);
                     call.on('stream', userVideoStream => {
@@ -48,20 +51,26 @@ const VideoPanel = ({ acceptVideo, setAcceptVideo, currentVideoId, peerFlag }) =
                     });
                 });
                 window.videoSocket.on('user-connected', userId => {
-                    connectToNewUser(userId, stream);
+                    //防止对方用户加入peerjs之前就链接从而产生报错，设置链接对方用户的延迟
+                    setTimeout(() => {
+                        connectToNewUser(userId, stream);
+                    }, 1000);
                 });
             })
             .catch((e) => {
+                //打开摄像头失败，兜底操作
                 window.socket.emit('sendHangupVideo', {
                     hangupFromId: currentUser?.id,
                     hangupToId: currentVideoId
                 })
                 console.log('打开摄像头失败', e);
             });
+        //打开PeerJS服务，将当前用户加入到视频房间中
         myPeer.on('open', id => {
             window.videoSocket.emit('join-room', currentVideoId, id);
         });
         return () => {
+            //退出界面或挂断时关闭链接
             myPeer.disconnect();
         }
     }, []);

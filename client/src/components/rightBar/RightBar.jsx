@@ -238,7 +238,7 @@ const RightBar = () => {
             <Empty description="没有相似兴趣好友可以推荐" />}
         </div>
         <div className="item">
-          <span>Online Friends</span>
+          <span>在线好友</span>
           {onlineData?.length ?
             onlineData?.map((friend, index) => (
               <div className="user" key={friend?.id || index}>

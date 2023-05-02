@@ -110,15 +110,13 @@ const Register = () => {
             </Form>
           </div>
           <div className="left">
-            <h1>Lucky</h1>
+            <h1>Lucky Chat</h1>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero cum,
-              alias totam numquam ipsa exercitationem dignissimos, error nam,
-              consequatur.
+              幸运聊网络社交平台--精简社交，丰富功能。
             </p>
-            <span>Do you have an account?</span>
+            <span>已有账号？</span>
             <Link to="/login">
-              <button>Login</button>
+              <button>立即登陆</button>
             </Link>
           </div>
         </div>

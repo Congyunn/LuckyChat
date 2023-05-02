@@ -30,7 +30,7 @@ const Login = () => {
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-  const { login, changeOnline, sendLoginEmail, loginEmail } = useContext(AuthContext);
+  const { login, changeOnline, sendLoginCode, loginEmail } = useContext(AuthContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -99,7 +99,7 @@ const Login = () => {
                       onChange={(e) => { setEmail(e.target.value); }}
                     />
                   </Form.Item>
-                  <Button onClick={() => { sendLoginEmail(email); }} icon={<MailOutlined />} >发送验证码</Button>
+                  <Button onClick={() => { sendLoginCode(email); }} icon={<MailOutlined />} >发送验证码</Button>
                   <Form.Item label="验证码" required>
                     <Input
                       type="text"
@@ -115,13 +115,11 @@ const Login = () => {
           <div className="left">
             <h1>Hello World.</h1>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero cum,
-              alias totam numquam ipsa exercitationem dignissimos, error nam,
-              consequatur.
+              幸运聊网络社交平台--精简社交，丰富功能。
             </p>
-            <span>Don't you have an account?</span>
+            <span>还没有账号？</span>
             <Link to="/register">
-              <button>Register</button>
+              <button>立即注册</button>
             </Link>
           </div>
         </div>
